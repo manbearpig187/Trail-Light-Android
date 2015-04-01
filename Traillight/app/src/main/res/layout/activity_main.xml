@@ -1,0 +1,82 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
+    android:background="#ff000000">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvHeading"
+        android:textColor="#ff61ff4c"
+        android:text="Heading: "
+        android:layout_above="@+id/toggleButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp" />
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Power On"
+        android:id="@+id/toggleButton"
+        android:onClick="powerToggle"
+        android:nestedScrollingEnabled="false"
+        android:textOff="Flashlight On"
+        android:textOn="Flashlight Off"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="46dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/compass"
+        android:src="@drawable/compass"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentLeft="false"
+        android:layout_marginBottom="75dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Latitude: Not Available"
+        android:id="@+id/tvLat"
+        android:textColor="#ff61ff4c"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Longitude: Not Available"
+        android:id="@+id/tvLon"
+        android:layout_below="@+id/tvLat"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ff61ff4c" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Altitude: Not Available"
+        android:id="@+id/tvAlt"
+        android:textColor="#ff61ff4c"
+        android:layout_below="@+id/tvLon"
+        android:layout_alignLeft="@+id/tvLat"
+        android:layout_alignStart="@+id/tvLat" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pressure: "
+        android:id="@+id/tvPre"
+        android:layout_below="@+id/tvAlt"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ff61ff4c" />
+
+</RelativeLayout>
