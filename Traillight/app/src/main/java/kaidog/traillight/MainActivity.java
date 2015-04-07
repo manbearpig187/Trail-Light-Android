@@ -23,36 +23,41 @@ import android.widget.ToggleButton;
 
 public class MainActivity extends ActionBarActivity implements SensorEventListener, LocationListener {
 
+    //logging, set to true to turn on logging
     private static final String TAG = "MainActivity";
-    private static final boolean VERBOSE = true;
+    private static final boolean VERBOSE = false;
 
+    //camera flash is part of camera class
     android.hardware.Camera cam;
     android.hardware.Camera.Parameters p;
 
+    //compass image
     private ImageView image;
 
+    //used for compass
     private float currentDegree = 0f;
 
+    //magnetic sensor (compass)
     private SensorManager mSensorManager;
+
+    //pressure sensor (altitude, pressure)
     private SensorManager pSensorManager;
 
+    //gps
     private LocationManager locationManager;
 
-    TextView tvHeading;
-
-    TextView tvLat;
-    TextView tvLon;
-    TextView tvAlt;
-    TextView tvPre;
+    //text on screen
+    TextView tvHeading; //heading
+    TextView tvLat;     //latitude
+    TextView tvLon;     //longitude
+    TextView tvAlt;     //altitude
+    TextView tvPre;     //pressure
 
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //cam = android.hardware.Camera.open();
-        //p = cam.getParameters();
 
         image = (ImageView) findViewById(R.id.compass);
 
@@ -63,14 +68,12 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
         tvPre = (TextView) findViewById(R.id.tvPre);
 
 
-        // initialize android device sensor
+        // initialize android device sensors
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
         pSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        //locationManager.requestLocationUpdates();
 
     }
 
@@ -79,7 +82,6 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
         super.onStart();
         if (VERBOSE) Log.v(TAG, "++ ON START ++");
 
-        //tvGPS.setText("aaaaa");
     }
 
     @Override
@@ -102,9 +104,7 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
                 SensorManager.SENSOR_DELAY_GAME
         );
 
-        //locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, this);
-        //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000, 0, this);
     }
 
     @Override
@@ -113,11 +113,9 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
         super.onPause();
         if (VERBOSE) Log.v(TAG, "- ON PAUSE -");
 
-        //stop listener to save battery
+        //stop listeners to save battery when app off screen
         mSensorManager.unregisterListener(this);
         cam.release();
-        //cam.unlock();
-
         locationManager.removeUpdates(this);
     }
 
@@ -132,8 +130,6 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
         super.onDestroy();
         if (VERBOSE) Log.v(TAG, "- ON DESTROY -");
     }
-
-
 
 
     @Override
@@ -158,28 +154,24 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
         return super.onOptionsItemSelected(item);
     }
 
-
+    //Power button pressed.  Turn flashlight on and off
     public void powerToggle(View view)
     {
         if( ((ToggleButton) view).isChecked() )
         {
-            //cam = android.hardware.Camera.open();
-            //p = cam.getParameters();
             p.setFlashMode(android.hardware.Camera.Parameters.FLASH_MODE_TORCH);
             cam.setParameters(p);
             cam.startPreview();
         }
         else
         {
-
-            //cam.release();
             p.setFlashMode(android.hardware.Camera.Parameters.FLASH_MODE_OFF);
             cam.setParameters(p);
             cam.stopPreview();
-            // cam.startPreview();
         }
     }
 
+    //Change displayed data for compass and pressure/altitude based on sensor input
     @Override
     public void onSensorChanged(SensorEvent event)
     {
@@ -224,8 +216,6 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
             float altitudeFt = altitudeM * (float) 3.28;
 
             tvAlt.setText("Altitude: " + Float.toString(altitudeFt) + " ft" );
-            //tvAlt.setText("Altitude: " + Float.toString(altitudeM) + " M" );
-            //tvAlt.setText("Pressure: " + Float.toString(pressure));
 
             tvPre.setText("Pressure: " + Float.toString(pressure) + " hPA");
         }
@@ -245,15 +235,14 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
         //not used
     }
 
+    //change gps location based on gps data
     @Override
     public void onLocationChanged(Location location)
     {
         if (VERBOSE) Log.v(TAG, "-- ON LOCATION CHANGED --");
 
-        //tvGPS.setText("Lat: " + Double.toString(location.getLatitude()) + " Lon: " + Double.toString(location.getLongitude()) );
         tvLat.setText("Latitude: " + Double.toString( location.getLatitude() ) + "º");
         tvLon.setText("Longitude: " + Double.toString( location.getLongitude() ) + "º");
-
 
     }
 
